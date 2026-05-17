@@ -1,2 +1,2 @@
 # Portfolio_I_Guess
-Portfolio?
+this (Pro_) is my portfolio with all the work I've done, so I downloaded I guess, enjoy.
