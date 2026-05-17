@@ -1,0 +1,151 @@
+Selvfølgelig, Magnus — du får et klart, overskueligt flowchart‑overblik over hele programmets logik. Jeg laver det i tekstform, så du kan tegne det i draw.io, Figma, PowerPoint eller hvad du foretrækker.
+
+---
+
+# **Flowchart‑struktur for Tkinter API‑klienten**
+
+## **Start**
+- Programmet starter
+- `tk.Tk()` oprettes
+- `APIClientGUI` initialiseres
+
+---
+
+# **Init‑fase (GUI setup)**
+
+**[Start GUI]**  
+→ Opret inputfelt  
+→ Opret "Send til API" knap  
+→ Opret "Hent data" knap  
+→ Opret output‑tekstboks  
+→ Start WebSocket‑tråd  
+→ **Gå til mainloop**
+
+---
+
+# **Mainloop (venter på brugerhandlinger)**
+
+Brugeren kan gøre tre ting:
+
+---
+
+## **1. Trykke på "Send til API"**
+
+**[Send til API]**  
+→ Hent tekst fra inputfelt  
+→ Er tekst tom?  
+- Ja → Stop  
+- Nej → Fortsæt  
+
+→ Opret payload `{ "message": text }`  
+→ Forsøg `POST API_URL/submit`  
+→ POST succes?  
+- Ja → Skriv "Sendt: payload" i output  
+- Nej → Skriv fejlmeddelelse  
+
+→ Tilbage til mainloop
+
+---
+
+## **2. Trykke på "Hent data"**
+
+**[Hent data]**  
+→ Forsøg `GET API_URL/data`  
+→ GET succes?  
+- Nej → Skriv fejlmeddelelse  
+- Ja →  
+  - Parse JSON  
+  - Ryd output  
+  - Pretty‑print JSON i output  
+
+→ Tilbage til mainloop
+
+---
+
+## **3. WebSocket‑tråden modtager data**
+
+**[WebSocket Thread]**  
+→ Opret WebSocketApp med callbacks  
+→ `run_forever()`  
+
+Callbacks:
+
+### **on_message**  
+→ Skriv `"WS modtaget: <message>"` i output  
+
+### **on_error**  
+→ Skriv `"WebSocket fejl: <error>"`  
+
+### **on_close**  
+→ Skriv `"WebSocket lukket"`  
+
+→ Fortsætter i baggrunden parallelt med GUI
+
+---
+
+# **Slut**
+Programmet stopper først når brugeren lukker Tkinter‑vinduet.
+
+---
+
+# **Visuelt flowchart (tekst‑diagram)**
+
+```
+[Start]
+   |
+   v
+[Init GUI] --> [Start WebSocket Thread]
+   |
+   v
+[Mainloop]
+   |
+   +--> [Send til API?] --No--> [Mainloop]
+   |            |
+   |           Yes
+   |            v
+   |     [Hent tekst] 
+   |            |
+   |     [Tom tekst?]--Yes-->[Mainloop]
+   |            |
+   |           No
+   |            v
+   |     [POST /submit]
+   |            |
+   |     [POST OK?]--No-->[Vis fejl]
+   |            |
+   |           Yes
+   |            v
+   |     [Vis "Sendt"]
+   |            |
+   |            v
+   |        [Mainloop]
+   |
+   +--> [Hent data?] --No--> [Mainloop]
+   |            |
+   |           Yes
+   |            v
+   |     [GET /data]
+   |            |
+   |     [GET OK?]--No-->[Vis fejl]
+   |            |
+   |           Yes
+   |            v
+   |     [Ryd output + vis JSON]
+   |            |
+   |            v
+   |        [Mainloop]
+   |
+   +--> [WebSocket event]
+                |
+        +-------+--------+
+        |       |        |
+   [on_message][on_error][on_close]
+        |       |        |
+   [Vis msg] [Vis fejl] [Vis lukket]
+        |
+   [Mainloop]
+```
+
+---
+
+Hvis du vil, kan jeg også lave en **grafisk version**, f.eks. som ASCII‑diagram, draw.io XML, eller en mere detaljeret version med swimlanes mellem GUI‑tråd og WebSocket‑tråd.

@@ -1,0 +1,1 @@
+So before you open my program, there is a small importance and that is if you run it, beware that the first image is a test image, the output.PNG is something I was intending to use from the other people in my group, but unfortunately since there is a bug in my program that does not allow me to switch properly between images, you're gonna have to live without it :(

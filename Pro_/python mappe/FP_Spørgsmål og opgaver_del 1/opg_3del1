@@ -1,0 +1,13 @@
+print("Kun de ulige tal")
+tal = [4, 7, 1, 9, 12, 3, 8]
+
+ulige = [x for x in tal if x % 2 != 0]
+print(ulige)
+
+print("Tal der er større end 5")
+stoerre_end_5 = [x for x in tal if x > 5]
+print(stoerre_end_5)
+
+print("Tal der både er lige og større end 5")
+lige_og_stoerre_end_5 = [x for x in tal if x % 2 == 0 and x > 5]
+print(lige_og_stoerre_end_5)

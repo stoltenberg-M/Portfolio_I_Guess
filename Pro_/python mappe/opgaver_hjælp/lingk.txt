@@ -1,0 +1,5 @@
+https://python-course.eu/advanced-python/list-comprehension.php
+
+https://python-course.eu/advanced-python/generators-and-iterators.php
+
+https://python-course.eu/advanced-python/iterable-iterator.php

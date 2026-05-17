@@ -1,0 +1,126 @@
+from tkinter import *
+from tkinter import ttk
+
+#Data og funktioner 
+
+def opret_produktkatalog():
+    # pris, antal
+    return [
+        [1, "Kage", 112.99, 20, 10],
+        [2, "Bil", 350000.95, 10, 0],
+        [3, "Sneakers", 599.95, 30, 5],
+        [4, "Hus", 2000000.95, 5, 0],
+        [5, "Øl", 49.95, 500, 20]
+    ]
+
+def opret_kunde(kunde_id, navn, adresse):
+    return [kunde_id, navn, adresse, []]
+
+def tilføj_til_kurv(kunder, katalog, kunde_id, produkt_id, antal):
+    for kunde in kunder:
+        if kunde[0] == kunde_id:
+            for produkt in katalog:
+                if produkt[0] == produkt_id and produkt[3] >= antal:
+                    kunde[3].append([produkt_id, antal])
+                    produkt[3] -= antal
+                    return
+            print("Produkt ikke fundet eller ikke nok på lager.")
+
+def beregn_totalpris(kunde, katalog):
+    total = 0
+    for item in kunde[3]:
+        produkt_id, antal = item
+        for produkt in katalog:
+            if produkt[0] == produkt_id:
+                pris = produkt[2]
+                rabat = produkt[4]
+                pris_med_rabat = pris * (1 - rabat / 100)
+                total += pris_med_rabat * antal
+    return round(total, 2)
+
+#GUI 
+
+root = Tk()
+root.geometry("425x300")
+root.title("Produktkatalog")
+
+mainframe = ttk.Frame(root, padding="10 10 10 10")
+mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+
+#Data
+katalog = opret_produktkatalog()
+kunder = [
+    opret_kunde(191, "Bo Jensen", "København"),
+    opret_kunde(702, "Sara Madsen", "Aarhus")
+]
+
+#Widgets
+ttk.Label(mainframe, text="Vælg kunde:").grid(column=0, row=0, sticky=W)
+kunde_var = StringVar()
+kunde_menu = ttk.Combobox(mainframe, textvariable=kunde_var, state="readonly")
+kunde_menu['values'] = [f"{k[0]} - {k[1]}" for k in kunder]
+kunde_menu.grid(column=1, row=0)
+
+ttk.Label(mainframe, text="Vælg produkt:").grid(column=0, row=1, sticky=W)
+produkt_var = StringVar()
+produkt_menu = ttk.Combobox(mainframe, textvariable=produkt_var, state="readonly")
+produkt_menu['values'] = [f"{p[0]} - {p[1]} ({p[2]} kr)" for p in katalog]
+produkt_menu.grid(column=1, row=1)
+
+ttk.Label(mainframe, text="Antal:").grid(column=0, row=2, sticky=W)
+antal_var = IntVar()
+antal_entry = ttk.Entry(mainframe, textvariable=antal_var)
+antal_entry.grid(column=1, row=2)
+
+output = StringVar()
+ttk.Label(mainframe, textvariable=output).grid(column=0, row=4, columnspan=2)
+
+#Ny tekstboks til visning af kurv
+kurv_visning = Text(mainframe, height=10, width=50)
+kurv_visning.grid(column=0, row=5, columnspan=2, pady=10)
+
+def køb():
+    try:
+        kunde_id = int(kunde_var.get().split(" - ")[0])
+        produkt_id = int(produkt_var.get().split(" - ")[0])
+        antal = antal_var.get()
+
+        #Find kunde og produkt
+        kunde = next((k for k in kunder if k[0] == kunde_id), None)
+        produkt = next((p for p in katalog if p[0] == produkt_id), None)
+
+        if produkt and kunde:
+            if produkt[3] >= antal:
+                tilføj_til_kurv(kunder, katalog, kunde_id, produkt_id, antal)
+                total = beregn_totalpris(kunde, katalog)
+                output.set(f"Totalpris for {kunde[1]}: {total} kr")
+
+                #Opdater tekstfelt med kurv
+                kurv_visning.delete("1.0", END)
+                kurv_visning.insert(END, f"Indkøbskurv for {kunde[1]}:\n")
+                for item in kunde[3]:
+                    pid, antal = item
+                    p = next((prod for prod in katalog if prod[0] == pid), None)
+                    if p:
+                        navn = p[1]
+                        pris = p[2]
+                        rabat = p[4]
+                        pris_med_rabat = pris * (1 - rabat / 100)
+                        total_pris = pris_med_rabat * antal
+                        kurv_visning.insert(END, f"- {navn} x{antal} af {pris_med_rabat:.2f} kr = {total_pris:.2f} kr\n")
+            else:
+                output.set(f"Produkt: {produkt[1]}\nIkke nok på lager – kun {produkt[3]} tilbage")
+        else:
+            output.set("Kunde eller produkt ikke fundet.")
+    except Exception as e:
+        output.set("Fejl i input!")
+        print(e)
+
+
+ttk.Button(mainframe, text="Tilføj til kurv", command=køb).grid(column=1, row=3)
+
+root.mainloop()
+
+

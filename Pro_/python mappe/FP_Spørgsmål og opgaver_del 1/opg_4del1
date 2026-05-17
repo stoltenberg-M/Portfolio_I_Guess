@@ -1,0 +1,4 @@
+tal = [5, 4, 7, 3, 6]
+
+result = ["lige" if x % 2 == 0 else "ulige" for x in tal]
+print(result)

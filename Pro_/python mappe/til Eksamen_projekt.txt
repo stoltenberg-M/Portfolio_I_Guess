@@ -1,0 +1,141 @@
+Her kommer en **stærk, struktureret og fagligt korrekt start på din synopsis**, direkte bundet op på både **Vejledning til Programmering B** (som jeg har læst via fanen) og **dit konkrete Image‑Piano‑program**.  
+Det er skrevet som en **tråd**, dvs. en sammenhængende skitse, du kan udbygge til 5–8 sider.  
+Jeg holder sproget i *synopsis‑stil* og ikke i *rapport‑stil*, så det passer til eksamensformen.
+
+---
+
+# ⭐ **Udkast til en stærk start på din synopsis (tråd / rå tekst du kan bygge videre på)**  
+*(Du kan kopiere dette direkte ind i dit dokument og udbygge hvert afsnit.)*
+
+---
+
+## **Forblad (arbejdstitel)**  
+**Titel:** *Image Piano – et hændelsesstyret lyd- og billedprogram i Python*  
+**Fag:** Programmering B  
+**Elev:** Magnus  
+**Produkt:** Interaktivt program, der omsætter pixel‑farver til lyd  
+**Programmeringssprog:** Python (Pygame)  
+
+---
+
+## **Abstract**  
+Dette projekt undersøger, hvordan programmering kan bruges til at skabe et interaktivt, kreativt værktøj, hvor et billede omsættes til lyd baseret på farveinformation. Programmet er udviklet i Python ved brug af Pygame‑biblioteket og kombinerer hændelsesstyret interaktion, billedbehandling og lydafspilning. Projektet demonstrerer, hvordan programmering kan anvendes til at udforske et æstetisk og teknisk problemfelt, og hvordan iterative udviklingsmetoder, test og dokumentation indgår i processen. Programmet giver brugeren mulighed for at skifte mellem flere billeder og generere lyd dynamisk ud fra musepositionen. Synopsen dokumenterer udviklingsprocessen, centrale designvalg, test, fejlfinding og perspektiver.
+
+---
+
+## **Problemformulering**  
+Hvordan kan jeg udvikle et interaktivt Python‑program, der omsætter farveinformation fra et billede til lyd i realtid, og hvordan kan hændelsesstyret programmering, billedbehandling og iterative udviklingsmetoder anvendes til at skabe et funktionelt og brugervenligt produkt?
+
+---
+
+## **1. Funktionsbeskrivelse af programmet**  
+Programmet fungerer som et digitalt instrument, hvor brugeren bevæger musen hen over et billede, og farven under musemarkøren omsættes til en lyd. Programmet:
+
+- Indlæser alle billeder fra en mappe samt et ekstra billede (*output.png*) uden for mappen.  
+- Giver brugeren mulighed for at skifte mellem billeder ved at trykke på tasterne **1–9**.  
+- Afspiller én af 24 lyde afhængigt af farvens lysstyrke (brightness).  
+- Justerer automatisk vinduets størrelse efter det valgte billede.  
+- Sikrer, at musepositionen altid er inden for billedets gyldige pixelområde (fejlhåndtering).  
+- Afspiller lyde øjeblikkeligt og stopper den forrige lyd for at undgå overlap.  
+- Lukker programmet ved tryk på **ESC**.
+
+Dette gør programmet til et eksempel på **hændelsesstyret interaktion**, **input‑output‑styring**, **brug af eksterne biblioteker**, **filhåndtering**, og **iterativ udvikling**, som alle er centrale elementer i Programmering B.
+
+---
+
+## **2. Overordnet programarkitektur**  
+Programmet kan beskrives i tre hovedkomponenter:
+
+### **2.1 Inputlag (events)**
+- Tastaturinput (1–9, ESC)  
+- Museinput (x,y‑position)  
+- Hændelsesstyring via `pygame.event.get()`
+
+### **2.2 Logiklag**
+- Beregning af farve → brightness → lyd‑index  
+- Håndtering af billedskift  
+- Fejlhåndtering (clamping af pixelkoordinater)  
+- Lydstyring (stop/play)
+
+### **2.3 Outputlag**
+- Rendering af billede  
+- Afspilning af lyd  
+- Dynamisk vinduesstørrelse  
+
+Dette kan senere visualiseres i et **flowchart** eller **MVC‑lignende diagram**, som vejledningen anbefaler.
+
+---
+
+## **3. Udviklingsproces (Use–Modify–Create + Stepwise Improvement)**  
+I henhold til vejledningen for Programmering B har udviklingen fulgt en iterativ tilgang:
+
+### **3.1 Use**
+Jeg startede med et grundlæggende Pygame‑program, der kunne vise et billede og registrere museinput.
+
+### **3.2 Modify**
+Herefter udvidede jeg programmet med:
+- Lydafspilning  
+- Brightness‑beregning  
+- Filhåndtering af billeder og lyde  
+- Fejlhåndtering af pixelkoordinater  
+
+### **3.3 Create**
+Til sidst udviklede jeg selvstændigt:
+- Dynamisk billedskift via taster  
+- Indlæsning af ekstra billede uden for mappen  
+- Automatisk vinduesændring  
+- Robust lydstyring (stop før play)  
+
+Denne proces dokumenterer, at jeg har arbejdet **inkrementelt og systematisk**, som vejledningen kræver.
+
+---
+
+## **4. Dokumentation af centrale kodeelementer**  
+*(Her indsætter du senere flowcharts, pseudokode og udvalgte kodestumper.)*
+
+Eksempler på elementer du kan dokumentere:
+
+- **Billedindlæsning** (liste af paths + ekstra billede)  
+- **switch_image()**‑funktionen  
+- **Brightness‑beregning**  
+- **Event‑loopet**  
+- **Fejlhåndtering af pixelkoordinater**  
+- **Lydmapping (0–23)**  
+
+---
+
+## **5. Test og fejlfinding**  
+Du kan beskrive:
+
+- Pixel‑index‑fejlen (mouse out of bounds) og hvordan du løste den med clamping.  
+- Test af alle 24 lyde.  
+- Test af billedskift (forskellige størrelser).  
+- Test af performance (lydrespons).  
+- Brugertest: hvordan opleves instrumentet?  
+
+---
+
+## **6. Konklusion**  
+Projektet viser, hvordan programmering kan bruges kreativt til at forbinde billede og lyd gennem hændelsesstyret interaktion. Jeg har arbejdet iterativt, anvendt eksterne biblioteker, udviklet et velstruktureret program og dokumenteret processen gennem modeller og kodeuddrag. Programmet opfylder kravene i projektoplægget og demonstrerer centrale faglige mål for Programmering B.
+
+---
+
+## **7. Bilag**  
+- Hele koden  
+- Flowcharts  
+- Pseudokode  
+- Screenshots  
+- Testnoter  
+
+---
+
+# ⭐ **Vil du have, at jeg skriver hele synopsen færdig (5–8 sider) i fuld længde?**  
+Jeg kan også:
+
+- lave flowcharts  
+- lave pseudokode  
+- lave UML‑diagrammer  
+- skrive hele dokumentet i færdig form  
+- lave en mundtlig eksamenspitch baseret på synopsen  
+
+Sig til hvad næste skridt skal være.

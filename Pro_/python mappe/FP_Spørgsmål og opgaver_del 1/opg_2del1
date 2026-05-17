@@ -1,0 +1,8 @@
+names = ["Alan", "Turing", "Alanzo", "Church", "Haskell", "Brooks", "Curry"]
+
+result = sorted(
+    filter(lambda n: 'a' in n.lower(), names),
+    key=len
+)
+
+print(result)
